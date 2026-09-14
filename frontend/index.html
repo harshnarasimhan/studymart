@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyMart – Second-hand study supplies</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <!-- ===== NAV BAR (always visible) ===== -->
+    <nav class="nav">
+      <a href="#" class="brand" data-view="home">📚 StudyMart</a>
+      <div class="nav-links">
+        <a href="#" data-view="home">Home</a>
+        <a href="#" data-view="browse" data-protected>Buy</a>
+        <a href="#" data-view="sell" data-protected>Sell</a>
+        <a href="#" data-view="orders" data-protected>Orders</a>
+        <a href="#" data-view="messages" data-protected>Messages <span id="unread-badge" class="badge" hidden></span></a>
+      </div>
+      <div class="nav-auth" id="nav-auth"></div>
+    </nav>
+
+    <!-- ===== VIEW: HOME / LANDING ===== -->
+    <section class="view" id="view-home">
+      <div class="hero">
+        <h1>Study smarter, spend less.</h1>
+        <p>Buy and sell second-hand textbooks, stationery and gadgets with students from your college.</p>
+        <div class="hero-actions">
+          <button class="btn primary" data-view="browse" data-protected>Start buying</button>
+          <button class="btn outline" data-view="sell" data-protected>Start selling</button>
+        </div>
+      </div>
+
+      <div class="container">
+        <h2>Browse by category</h2>
+        <div class="categories">
+          <button class="category" data-category="BOOK" data-protected>📖<span>Books</span></button>
+          <button class="category" data-category="STATIONERY" data-protected>✏️<span>Stationery</span></button>
+          <button class="category" data-category="GADGET" data-protected>💻<span>Gadgets</span></button>
+          <button class="category" data-category="OTHER" data-protected>🎒<span>Other</span></button>
+        </div>
+
+        <h2>Latest listings</h2>
+        <p class="muted">Log in to reserve an item — first come, first served.</p>
+        <div id="home-listings" class="grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: LOGIN / REGISTER ===== -->
+    <section class="view" id="view-login" hidden>
+      <div class="auth-card">
+        <div class="tabs">
+          <button class="tab active" data-tab="login">Log in</button>
+          <button class="tab" data-tab="register">Register</button>
+        </div>
+
+        <form id="login-form" class="auth-form">
+          <input name="email" type="email" placeholder="Email" required />
+          <input name="password" type="password" placeholder="Password" required />
+          <button class="btn primary" type="submit">Log in</button>
+        </form>
+
+        <form id="register-form" class="auth-form" hidden>
+          <input name="name" placeholder="Full name" required />
+          <input name="email" type="email" placeholder="Email" required />
+          <input name="college" placeholder="School / College" required />
+          <input name="paymentId" placeholder="Payment ID (Revolut tag, UPI ID, IBAN…)" required />
+          <input name="password" type="password" placeholder="Password (min 4 chars)" minlength="4" required />
+          <button class="btn primary" type="submit">Create account</button>
+        </form>
+
+        <p id="auth-error" class="error" hidden></p>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: CHOOSE BUY OR SELL ===== -->
+    <section class="view" id="view-choose" hidden>
+      <div class="container center">
+        <h1>Welcome, <span id="choose-name"></span>!</h1>
+        <p class="muted">What would you like to do today?</p>
+        <div class="choose-cards">
+          <button class="choose-card" data-view="browse">
+            🛒<h3>I want to buy</h3><p>Browse the catalogue of second-hand supplies.</p>
+          </button>
+          <button class="choose-card" data-view="sell">
+            🏷️<h3>I want to sell</h3><p>List something you no longer need.</p>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: BUY / CATALOGUE ===== -->
+    <section class="view" id="view-browse" hidden>
+      <div class="container">
+        <h1>Catalogue</h1>
+        <div class="filters">
+          <input id="search" placeholder="Search titles…" />
+          <select id="filter-category">
+            <option value="">All categories</option>
+            <option value="BOOK">Books</option>
+            <option value="STATIONERY">Stationery</option>
+            <option value="GADGET">Gadgets</option>
+            <option value="OTHER">Other</option>
+          </select>
+          <select id="filter-condition">
+            <option value="">Any condition</option>
+            <option value="NEW">New</option>
+            <option value="GOOD">Good</option>
+            <option value="FAIR">Fair</option>
+          </select>
+        </div>
+        <p id="browse-message" class="notice" hidden></p>
+        <div id="browse-listings" class="grid"></div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: SELL ===== -->
+    <section class="view" id="view-sell" hidden>
+      <div class="container two-col">
+        <div class="panel">
+          <h2>Post a listing</h2>
+          <form id="sell-form">
+            <input name="title" placeholder="Title (e.g. Physics textbook)" required />
+            <select name="category" required>
+              <option value="BOOK">Book</option>
+              <option value="STATIONERY">Stationery</option>
+              <option value="GADGET">Gadget</option>
+              <option value="OTHER">Other</option>
+            </select>
+            <select name="condition" required>
+              <option value="NEW">New</option>
+              <option value="GOOD">Good</option>
+              <option value="FAIR">Fair</option>
+            </select>
+            <input name="price" type="number" step="0.01" min="0" placeholder="Price (€)" required />
+            <textarea name="description" placeholder="Short description"></textarea>
+            <button class="btn primary" type="submit">Post listing</button>
+          </form>
+          <p id="sell-message" class="notice" hidden></p>
+        </div>
+        <div>
+          <h2>My listings</h2>
+          <div id="my-listings" class="grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: ORDERS (profile) ===== -->
+    <section class="view" id="view-orders" hidden>
+      <div class="container">
+        <div class="profile-card">
+          <h1 id="profile-name"></h1>
+          <p class="muted" id="profile-details"></p>
+        </div>
+        <p id="orders-message" class="notice" hidden></p>
+        <h2>My purchases</h2>
+        <div id="purchases" class="orders"></div>
+        <h2>My sales</h2>
+        <div id="sales" class="orders"></div>
+      </div>
+    </section>
+
+    <!-- ===== VIEW: MESSAGES / CHAT ===== -->
+    <section class="view" id="view-messages" hidden>
+      <div class="container chat-layout">
+        <aside class="conversations">
+          <h2>Conversations</h2>
+          <div id="conversation-list"></div>
+        </aside>
+        <div class="chat panel">
+          <div id="chat-header" class="chat-header">
+            <p class="muted">Select a conversation, or press Reserve on a listing to message its seller.</p>
+          </div>
+          <div id="chat-messages" class="chat-messages"></div>
+          <form id="chat-form" class="chat-form" hidden>
+            <input id="chat-input" placeholder="Type a message…" autocomplete="off" required />
+            <button class="btn primary" type="submit">Send</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PAYMENT MODAL (QR code) ===== -->
+    <div id="pay-modal" class="modal" hidden>
+      <div class="modal-card">
+        <button class="modal-close" id="pay-close" aria-label="Close">×</button>
+        <h2>Pay the seller</h2>
+        <p id="pay-summary" class="muted"></p>
+        <canvas id="pay-qr"></canvas>
+        <p class="pay-to">Pay to: <strong id="pay-to"></strong></p>
+        <p class="muted small">Scan with your banking / UPI app, then confirm below.</p>
+        <button class="btn primary" id="pay-confirm">I've paid</button>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
